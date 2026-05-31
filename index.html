@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lap Zerin | Custom Stickers, Hoodies & Mugs</title>
+    <meta name="description"
+        content="Lap Zerin - Premium custom stickers, hoodies, and mugs. Express yourself with high-quality merch.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Shared Header Injected Here -->
+    <div id="lapzerin-header"></div>
+
+    <!-- ───── HERO ───── -->
+    <section class="hero" id="home">
+        <div class="hero-inner">
+            <div class="hero-text">
+                <div class="hero-tag"><i class="fas fa-star"></i> <span data-key="hero_tag">Premium Custom Merch</span>
+                </div>
+                <h1 class="text-gradient" data-key="hero_title">Stickers, Hoodies & More</h1>
+                <p data-key="hero_sub">Express yourself with high-quality custom stickers, premium hoodies, and
+                    personalized ceramic mugs. We deliver excellence.</p>
+                <div class="hero-actions">
+                    <a href="#products" class="btn btn-gold" data-key="hero_btn_shop"><i class="fas fa-store"></i> Shop
+                        Now</a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <img src="582437265_17891465382365437_1595693330347271303_n.jpg" alt="Featured Product">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ───── ABOUT ───── -->
+    <section class="section-pad" id="about">
+        <div class="section-header">
+            <h2 class="text-gradient" data-key="about_title"><i class="fas fa-info-circle"
+                    style="color:var(--gold);-webkit-text-fill-color:var(--gold);"></i> About Us</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="about-grid">
+            <div class="about-img">
+                <img id="about-us-img" src="534645404_17880928584365437_5614943620985616051_n.jpg"
+                    alt="About Lap Zerin">
+            </div>
+            <div class="about-content">
+                <h3 data-key="about_sub">Premium Quality & Craftsmanship</h3>
+                <p data-key="about_p1">Lap Zerin specializes in bringing your designs to life. From high-durability
+                    stickers to the softest, most comfortable hoodies, we combine quality materials with precision
+                    printing.</p>
+                <p data-key="about_p2">Whether you need custom merchandise for your brand, or unique artwork for
+                    yourself, our products are crafted to impress. Experience fashion and accessories on another level.
+                </p>
+                <a href="#products" class="btn btn-gold" data-key="hero_btn_shop" style="margin-top: 15px;"><i
+                        class="fas fa-arrow-right"></i> View Products</a>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <!-- ───── PRODUCT ANATOMY ───── -->
+    <section class="section-pad" id="product-anatomy" style="position:relative;overflow:hidden;">
+
+        <!-- Background glow -->
+        <div
+            style="position:absolute;top:0;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(245,184,0,0.05) 0%,transparent 70%);pointer-events:none;z-index:0;">
+        </div>
+
+        <div class="section-header" style="position:relative;z-index:1;">
+            <h2 class="text-gradient"><i class="fas fa-microscope"
+                    style="color:var(--gold);-webkit-text-fill-color:var(--gold);"></i> Product Anatomy</h2>
+            <div class="bar"></div>
+            <p style="color:var(--white-60);margin-top:12px;font-size:1rem;">Hover or tap a callout to learn about every
+                detail</p>
+        </div>
+
+        <!-- Product tabs -->
+        <div
+            style="display:flex;justify-content:center;gap:12px;margin-bottom:40px;flex-wrap:wrap;position:relative;z-index:1;">
+            <button class="anatomy-tab active" onclick="switchAnatomy('hoodie')"><i class="fas fa-tshirt"></i>
+                Hoodie</button>
+            <button class="anatomy-tab" onclick="switchAnatomy('sticker')"><i class="fas fa-sticky-note"></i>
+                Sticker</button>
+            <button class="anatomy-tab" onclick="switchAnatomy('mug')"><i class="fas fa-mug-hot"></i> Mug</button>
+        </div>
+
+        <!-- ── HOODIE ANATOMY ── -->
+        <div class="anatomy-panel" id="anat-hoodie" style="position:relative;z-index:1;">
+            <div class="anatomy-layout" style="grid-template-columns: 1fr auto; max-width: 700px;">
+                <!-- Left callouts -->
+                <div class="callout-col callout-left">
+                    <div class="callout" data-target="h1" onmouseenter="hlCallout('h1',true)"
+                        onmouseleave="hlCallout('h1',false)">
+                        <span class="callout-label">Premium Cotton Blend</span>
+                        <span class="callout-line"></span>
+                        <span class="callout-dot"></span>
+                    </div>
+                    <div class="callout" data-target="h2" onmouseenter="hlCallout('h2',true)"
+                        onmouseleave="hlCallout('h2',false)">
+                        <span class="callout-label">Reinforced Seams</span>
+                        <span class="callout-line"></span>
+                        <span class="callout-dot"></span>
+                    </div>
+                    <div class="callout" data-target="h3" onmouseenter="hlCallout('h3',true)"
+                        onmouseleave="hlCallout('h3',false)">
+                        <span class="callout-label">Front Kangaroo Pocket</span>
+                        <span class="callout-line"></span>
+                        <span class="callout-dot"></span>
+                    </div>
+                </div>
+
+                <!-- Product image -->
+                <div class="anatomy-img-wrap">
+                    <img src="582437265_17891465382365437_1595693330347271303_n.jpg" alt="Hoodie Anatomy"
+                        class="anatomy-img">
+                    <!-- Hotspot dots on image -->
+                    <div class="anat-dot" id="h1" style="top:25%;left:25%;" title="Premium Cotton Blend"></div>
+                    <div class="anat-dot" id="h2" style="top:45%;left:50%;" title="Reinforced Seams"></div>
+                    <div class="anat-dot" id="h3" style="top:75%;left:45%;" title="Front Kangaroo Pocket"></div>
+                </div>
+            </div>
+
+            <!-- Spec pills -->
+            <div class="anatomy-specs">
+                <div class="spec-pill"><i class="fas fa-weight-hanging"></i> 320 GSM Fleece</div>
+                <div class="spec-pill"><i class="fas fa-palette"></i> Fade-Resistant Ink</div>
+                <div class="spec-pill"><i class="fas fa-thermometer-half"></i> Cold-Wash Safe</div>
+                <div class="spec-pill"><i class="fas fa-ruler"></i> XS – 3XL Sizes</div>
+            </div>
+        </div>
+
+        <!-- ── STICKER ANATOMY ── -->
+        <div class="anatomy-panel" id="anat-sticker" style="display:none;position:relative;z-index:1;">
+            <div class="anatomy-layout">
+                <div class="callout-col callout-left">
+                    <div class="callout" data-target="s1" onmouseenter="hlCallout('s1',true)"
+                        onmouseleave="hlCallout('s1',false)">
+                        <span class="callout-label">UV Laminate Coating</span>
+                        <span class="callout-line"></span>
+                        <span class="callout-dot"></span>
+                    </div>
+                    <div class="callout" data-target="s2" onmouseenter="hlCallout('s2',true)"
+                        onmouseleave="hlCallout('s2',false)">
+                        <span class="callout-label">Die-Cut Precision Edge</span>
+                        <span class="callout-line"></span>
+                        <span class="callout-dot"></span>
+                    </div>
+                    <div class="callout" data-target="s3" onmouseenter="hlCallout('s3',true)"
+                        onmouseleave="hlCallout('s3',false)">
+                        <span class="callout-label">Waterproof Vinyl Base</span>
+                        <span class="callout-line"></span>
+                        <span class="callout-dot"></span>
+                    </div>
+                </div>
+                <div class="anatomy-img-wrap">
+                    <img src="582437265_17891465382365437_1595693330347271303_n.jpg" alt="Sticker Anatomy"
+                        class="anatomy-img">
+                    <div class="anat-dot" id="s1" style="top:10%;left:50%;" title="UV Coating"></div>
+                    <div class="anat-dot" id="s2" style="top:45%;left:20%;" title="Die-Cut Edge"></div>
+                    <div class="anat-dot" id="s3" style="top:80%;left:50%;" title="Vinyl Base"></div>
+                    <div class="anat-dot" id="s4" style="top:30%;right:18%;" title="Vivid CMYK Print"></div>
+                    <div class="anat-dot" id="s5" style="top:65%;right:22%;" title="Easy-Peel Backing"></div>
+                </div>
+                <div class="callout-col callout-right">
+                    <div class="callout callout-r" data-target="s4" onmouseenter="hlCallout('s4',true)"
+                        onmouseleave="hlCallout('s4',false)">
+                        <span class="callout-dot"></span>
+                        <span class="callout-line"></span>
+                        <span class="callout-label">Vivid CMYK Print</span>
+                    </div>
+                    <div class="callout callout-r" data-target="s5" onmouseenter="hlCallout('s5',true)"
+                        onmouseleave="hlCallout('s5',false)">
+                        <span class="callout-dot"></span>
+                        <span class="callout-line"></span>
+                        <span class="callout-label">Easy-Peel Backing</span>
+                    </div>
+                </div>
+            </div>
+            <div class="anatomy-specs">
+                <div class="spec-pill"><i class="fas fa-tint-slash"></i> Waterproof</div>
+                <div class="spec-pill"><i class="fas fa-sun"></i> UV Resistant</div>
+                <div class="spec-pill"><i class="fas fa-cut"></i> 3 · 5 · 9 cm</div>
+                <div class="spec-pill"><i class="fas fa-layer-group"></i> 5-Year Durability</div>
+            </div>
+        </div>
+
+        <!-- ── MUG ANATOMY ── -->
+        <div class="anatomy-panel" id="anat-mug" style="display:none;position:relative;z-index:1;">
+            <div class="anatomy-layout">
+                <div class="callout-col callout-left">
+                    <div class="callout" data-target="m1" onmouseenter="hlCallout('m1',true)"
+                        onmouseleave="hlCallout('m1',false)">
+                        <span class="callout-label">Ceramic Grade Body</span>
+                        <span class="callout-line"></span>
+                        <span class="callout-dot"></span>
+                    </div>
+                    <div class="callout" data-target="m2" onmouseenter="hlCallout('m2',true)"
+                        onmouseleave="hlCallout('m2',false)">
+                        <span class="callout-label">Sublimation Print Zone</span>
+                        <span class="callout-line"></span>
+                        <span class="callout-dot"></span>
+                    </div>
+                    <div class="callout" data-target="m3" onmouseenter="hlCallout('m3',true)"
+                        onmouseleave="hlCallout('m3',false)">
+                        <span class="callout-label">Comfort-Grip Handle</span>
+                        <span class="callout-line"></span>
+                        <span class="callout-dot"></span>
+                    </div>
+                </div>
+                <div class="anatomy-img-wrap">
+                    <img src="634874118_17902563750365437_7086246413389801723_n.jpg" alt="Mug Anatomy"
+                        class="anatomy-img">
+                    <div class="anat-dot" id="m1" style="top:15%;left:40%;" title="Ceramic Body"></div>
+                    <div class="anat-dot" id="m2" style="top:45%;left:25%;" title="Print Zone"></div>
+                    <div class="anat-dot" id="m3" style="top:65%;right:25%;" title="Handle"></div>
+                    <div class="anat-dot" id="m4" style="top:10%;right:30%;" title="Food-Safe Glaze"></div>
+                    <div class="anat-dot" id="m5" style="top:82%;left:50%;" title="Non-Slip Base"></div>
+                </div>
+                <div class="callout-col callout-right">
+                    <div class="callout callout-r" data-target="m4" onmouseenter="hlCallout('m4',true)"
+                        onmouseleave="hlCallout('m4',false)">
+                        <span class="callout-dot"></span>
+                        <span class="callout-line"></span>
+                        <span class="callout-label">Food-Safe Glaze</span>
+                    </div>
+                    <div class="callout callout-r" data-target="m5" onmouseenter="hlCallout('m5',true)"
+                        onmouseleave="hlCallout('m5',false)">
+                        <span class="callout-dot"></span>
+                        <span class="callout-line"></span>
+                        <span class="callout-label">Non-Slip Base</span>
+                    </div>
+                </div>
+            </div>
+            <div class="anatomy-specs">
+                <div class="spec-pill"><i class="fas fa-mug-hot"></i> 11 oz & 15 oz</div>
+                <div class="spec-pill"><i class="fas fa-blender"></i> Dishwasher Safe</div>
+                <div class="spec-pill"><i class="fas fa-fire"></i> Microwave Safe</div>
+                <div class="spec-pill"><i class="fas fa-palette"></i> Full-Wrap Print</div>
+            </div>
+        </div>
+
+    </section>
+
+    <style>
+        /* ── Anatomy Tabs ── */
+        .anatomy-tab {
+            background: rgba(245, 184, 0, 0.08);
+            border: 1px solid rgba(245, 184, 0, 0.25);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 11px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .anatomy-tab:hover,
+        .anatomy-tab.active {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: #0a0a0a;
+        }
+
+        /* ── Layout ── */
+        .anatomy-layout {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 24px;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto 30px;
+        }
+
+        .anatomy-img-wrap {
+            position: relative;
+            width: 340px;
+            flex-shrink: 0;
+        }
+
+        .anatomy-img {
+            width: 100%;
+            border-radius: 20px;
+            border: 1px solid rgba(245, 184, 0, 0.2);
+            box-shadow: 0 0 60px rgba(245, 184, 0, 0.1);
+            display: block;
+        }
+
+        /* ── Callouts ── */
+        .callout-col {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .callout-left .callout {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0;
+            cursor: pointer;
+        }
+
+        .callout-right .callout {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0;
+            cursor: pointer;
+        }
+
+        .callout-label {
+            background: rgba(20, 16, 4, 0.9);
+            border: 1px solid rgba(245, 184, 0, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.25s;
+            backdrop-filter: blur(8px);
+        }
+
+        .callout:hover .callout-label,
+        .callout.active .callout-label {
+            background: rgba(245, 184, 0, 0.15);
+            border-color: var(--gold);
+            color: #fff;
+        }
+
+        .callout-line {
+            display: block;
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(245, 184, 0, 0.5), rgba(245, 184, 0, 0.15));
+            flex-shrink: 0;
+        }
+
+        .callout-r .callout-line {
+            background: linear-gradient(270deg, rgba(245, 184, 0, 0.5), rgba(245, 184, 0, 0.15));
+        }
+
+        .callout-dot {
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--gold);
+            flex-shrink: 0;
+            box-shadow: 0 0 8px rgba(245, 184, 0, 0.7);
+            transition: transform 0.25s;
+        }
+
+        .callout:hover .callout-dot {
+            transform: scale(1.4);
+        }
+
+        /* ── Dots on image ── */
+        .anat-dot {
+            position: absolute;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--gold);
+            border: 2px solid #fff;
+            cursor: pointer;
+            z-index: 5;
+            box-shadow: 0 0 0 0 rgba(245, 184, 0, 0.7);
+            animation: pinPulse 2.5s infinite;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .anat-dot.lit {
+            background: #fff;
+            transform: scale(1.6);
+            box-shadow: 0 0 16px rgba(245, 184, 0, 1);
+        }
+
+        /* ── Spec pills ── */
+        .anatomy-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .spec-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.65);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .spec-pill i {
+            color: var(--gold);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .anatomy-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .callout-col {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .callout-left .callout,
+            .callout-right .callout {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .callout-line {
+                width: 1px;
+                height: 20px;
+            }
+
+            .anatomy-img-wrap {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <script>
+        function switchAnatomy(product) {
+            document.querySelectorAll('.anatomy-panel').forEach(p => p.style.display = 'none');
+            document.getElementById('anat-' + product).style.display = 'block';
+            document.querySelectorAll('.anatomy-tab').forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            if (typeof gsap !== 'undefined') {
+                gsap.fromTo('#anat-' + product, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+            }
+        }
+        function hlCallout(dotId, on) {
+            const dot = document.getElementById(dotId);
+            if (dot) dot.classList.toggle('lit', on);
+        }
+    </script>
+
+    <!-- ───── FEATURES / WHY CHOOSE US ───── -->
+
+    <section class="section-pad features-section" id="features"
+        style="background: rgba(255, 255, 255, 0.02); border-top: 1px solid var(--white-10); border-bottom: 1px solid var(--white-10);">
+        <div class="section-header">
+            <h2 class="text-gradient" data-key="why_title"><i class="fas fa-star"
+                    style="color:var(--gold);-webkit-text-fill-color:var(--gold);"></i> Why Choose Us</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="products-grid" style="text-align: center;">
+            <div class="product-card" style="padding: 40px 20px;">
+                <i class="fas fa-shipping-fast" style="font-size: 3rem; color: var(--gold); margin-bottom: 20px;"></i>
+                <h3 style="font-size: 1.4rem; margin-bottom: 15px; color: var(--white);" data-key="f1_title">Fast
+                    Delivery</h3>
+                <p style="color: var(--white-60); line-height: 1.6;" data-key="f1_desc">We ship your custom-made
+                    products quickly and securely, right to your doorstep anywhere in Kurdistan!</p>
+            </div>
+            <div class="product-card" style="padding: 40px 20px;">
+                <i class="fas fa-medal" style="font-size: 3rem; color: var(--gold); margin-bottom: 20px;"></i>
+                <h3 style="font-size: 1.4rem; margin-bottom: 15px; color: var(--white);" data-key="f2_title">Premium
+                    Quality</h3>
+                <p style="color: var(--white-60); line-height: 1.6;" data-key="f2_desc">We use only the finest
+                    materials, from our scratch-resistant sticker vinyls to our high-quality soft cotton apparel.</p>
+            </div>
+            <div class="product-card" style="padding: 40px 20px;">
+                <i class="fas fa-headset" style="font-size: 3rem; color: var(--gold); margin-bottom: 20px;"></i>
+                <h3 style="font-size: 1.4rem; margin-bottom: 15px; color: var(--white);" data-key="f3_title">24/7
+                    Support</h3>
+                <p style="color: var(--white-60); line-height: 1.6;" data-key="f3_desc">Got a special design request?
+                    Our creative support team is always available to help make your vision a reality.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ───── PRODUCTS (on main page) ───── -->
+    <section class="section-pad" id="products">
+        <div class="section-header">
+            <h2 class="text-gradient" data-key="products_title"><i class="fas fa-shopping-bag"
+                    style="color:var(--gold);-webkit-text-fill-color:var(--gold);"></i> Our Products</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="products-grid">
+
+            <!-- Sticker -->
+            <div class="product-card">
+                <div class="prod-img">
+                    <span class="prod-badge">Stickers</span>
+                    <img src="582437265_17891465382365437_1595693330347271303_n.jpg" alt="Custom Sticker">
+                </div>
+                <div class="prod-body">
+                    <h3 data-key="p1_title">Custom Die-Cut Sticker</h3>
+                    <p data-key="p1_desc">Water-proof, scratch-resistant vinyl stickers for laptops and cars.</p>
+                    <div class="prod-meta">
+                        <span class="prod-price">$3.99</span>
+                        <select class="prod-size">
+                            <option>Small (5cm)</option>
+                            <option>Medium (10cm)</option>
+                            <option>Large (15cm)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-gold prod-buy" data-key="add_cart"
+                        onclick="addToCart('Custom Die-Cut Sticker', 3.99)"><i class="fas fa-cart-plus"></i> Add to
+                        Cart</button>
+                </div>
+            </div>
+
+            <!-- Hoodie -->
+            <div class="product-card">
+                <div class="prod-img">
+                    <span class="prod-badge">Apparel</span>
+                    <img src="634823039_17902363227365437_878815840206300585_n.jpg" alt="Premium Hoodie">
+                </div>
+                <div class="prod-body">
+                    <h3 data-key="p2_title">Premium Black Hoodie</h3>
+                    <p data-key="p2_desc">Soft cotton blend with custom high-quality embroidery or print.</p>
+                    <div class="prod-meta">
+                        <span class="prod-price">$35.00</span>
+                        <select class="prod-size">
+                            <option>Medium (M)</option>
+                            <option>Large (L)</option>
+                            <option>X-Large (XL)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-gold prod-buy" data-key="add_cart"
+                        onclick="addToCart('Premium Black Hoodie', 35.00)"><i class="fas fa-cart-plus"></i> Add to
+                        Cart</button>
+                </div>
+            </div>
+
+            <!-- Mug -->
+            <div class="product-card">
+                <div class="prod-img">
+                    <span class="prod-badge">Mugs</span>
+                    <img src="634874118_17902563750365437_7086246413389801723_n.jpg" alt="Custom Mug">
+                </div>
+                <div class="prod-body">
+                    <h3 data-key="p3_title">Ceramic Graphic Mug</h3>
+                    <p data-key="p3_desc">Start your day with our high-quality sublimated ceramic mugs.</p>
+                    <div class="prod-meta">
+                        <span class="prod-price">$12.50</span>
+                        <select class="prod-size">
+                            <option>11 oz</option>
+                            <option>15 oz</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-gold prod-buy" data-key="add_cart"
+                        onclick="addToCart('Ceramic Graphic Mug', 12.50)"><i class="fas fa-cart-plus"></i> Add to
+                        Cart</button>
+                </div>
+            </div>
+
+            <!-- Gift Box -->
+            <div class="product-card">
+                <div class="prod-img">
+                    <span class="prod-badge">Bundles</span>
+                    <img src="635772067_17902563759365437_7321501078453608936_n.jpg" alt="Gift Box">
+                </div>
+                <div class="prod-body">
+                    <h3 data-key="p4_title">Luxury Gift Box</h3>
+                    <p data-key="p4_desc">The ultimate package containing hoodie, cup, and sticker sets.</p>
+                    <div class="prod-meta">
+                        <span class="prod-price">$55.00</span>
+                        <select class="prod-size" style="visibility:hidden;">
+                            <option>N/A</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-gold prod-buy" data-key="add_cart"
+                        onclick="addToCart('Luxury Gift Box', 55.00)"><i class="fas fa-cart-plus"></i> Add to
+                        Cart</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="text-align:center; margin-top: 60px;">
+            <a href="products.html" class="btn btn-outline" data-key="view_all"><i class="fas fa-th-large"></i> View All
+                Products</a>
+        </div>
+    </section>
+
+
+
+    <!-- Shared Footer Injected Here -->
+    <div id="lapzerin-footer"></div>
+
+    <script src="components.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

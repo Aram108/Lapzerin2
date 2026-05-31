@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication | Lap Zerin</title>
+    <meta name="description" content="Sign in or create a new account with Lap Zerin.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Shared Header Injected Here -->
+    <div id="lapzerin-header"></div>
+
+    <!-- ───── AUTHENTICATION PAGE ───── -->
+    <section class="section-pad"
+        style="padding-top: 160px; padding-bottom: 80px; min-height: 80vh; display: flex; align-items: center; justify-content: center;">
+        <div class="modal-box"
+            style="position: relative; top: 0; left: 0; transform: none; box-shadow: 0 10px 40px rgba(0,0,0,0.5); width: 100%; max-width: 450px;">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <img src="logo.png" alt="Lap Zerin"
+                    style="height: 80px; border-radius: 8px; margin-bottom: 5px;">
+            </div>
+
+            <div class="modal-tabs" style="margin-bottom: 20px;">
+                <button class="modal-tab active" onclick="switchPageTab('login')" id="tab-login"
+                    data-key="tab_login">Login</button>
+                <button class="modal-tab" onclick="switchPageTab('signup')" id="tab-signup" data-key="tab_signup">Sign
+                    Up</button>
+            </div>
+
+            <form class="modal-form" id="page-login-form">
+                <div class="input-wrap"><i class="fas fa-envelope"></i><input type="email" placeholder="Email Address"
+                        data-key-placeholder="email_ph" required></div>
+                <div class="input-wrap"><i class="fas fa-lock"></i><input type="password" placeholder="Password"
+                        data-key-placeholder="pass_ph" required></div>
+                <div style="text-align: right; margin-bottom: 20px;"><a href="#"
+                        style="color: var(--gold); font-size: 0.9rem;">Forgot Password?</a></div>
+                <button type="submit" class="btn btn-gold modal-submit" data-key="btn_login"><i
+                        class="fas fa-sign-in-alt"></i> Login</button>
+            </form>
+
+            <form class="modal-form" id="page-signup-form" style="display:none;">
+                <div class="input-wrap"><i class="fas fa-user"></i><input type="text" placeholder="Full Name"
+                        data-key-placeholder="name_ph" required></div>
+                <div class="input-wrap"><i class="fas fa-envelope"></i><input type="email" placeholder="Email Address"
+                        data-key-placeholder="email_ph" required></div>
+                <div class="input-wrap"><i class="fas fa-lock"></i><input type="password" placeholder="Password"
+                        data-key-placeholder="pass_ph" required></div>
+                <button type="submit" class="btn btn-gold modal-submit" data-key="btn_signup"><i
+                        class="fas fa-user-plus"></i> Create Account</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Shared Footer Injected Here -->
+    <div id="lapzerin-footer"></div>
+
+    <script src="components.js"></script>
+    <script src="script.js"></script>
+    <script>
+        function switchPageTab(tabName) {
+            const loginForm = document.getElementById('page-login-form');
+            const signupForm = document.getElementById('page-signup-form');
+            const tabLogin = document.getElementById('tab-login');
+            const tabSignup = document.getElementById('tab-signup');
+
+            if (tabName === 'login') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                tabLogin.classList.add('active');
+                tabSignup.classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                tabSignup.classList.add('active');
+                tabLogin.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+
+</html>

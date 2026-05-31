@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products | Lap Zerin</title>
+    <meta name="description" content="Shop all stickers, hoodies, mugs, and gift boxes from Lap Zerin.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Shared Header Injected Here -->
+    <div id="lapzerin-header"></div>
+
+    <!-- ───── PAGE HEADER ───── -->
+    <div style="padding-top: 160px; text-align: center; padding-bottom: 20px;">
+        <h1 class="text-gradient" style="font-size: 3.5rem; text-transform: uppercase; font-weight: 800;"><i
+                class="fas fa-store" style="color:var(--gold);-webkit-text-fill-color:var(--gold);"></i> <span
+                data-key="products_title">Our Products</span></h1>
+        <div class="bar" style="margin: 15px auto;"></div>
+    </div>
+
+    <!-- ───── STICKERS SECTION ───── -->
+    <section class="section-pad" style="padding-top: 40px;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; width: 90%;">
+            <h2 class="text-gradient" style="font-size: 2.5rem; margin-bottom: 30px;"><i class="fas fa-sticky-note"></i>
+                Custom Stickers</h2>
+            <div class="products-grid">
+                <!-- Sticker 1 -->
+                <div class="product-card">
+                    <div class="prod-img">
+                        <span class="prod-badge">Stickers</span>
+                        <img src="582437265_17891465382365437_1595693330347271303_n.jpg" alt="Custom Sticker">
+                    </div>
+                    <div class="prod-body">
+                        <h3 data-key="p1_title">Custom Die-Cut Sticker</h3>
+                        <p data-key="p1_desc">Water-proof, scratch-resistant vinyl stickers for laptops and cars.</p>
+                        <div class="prod-meta">
+                            <span class="prod-price">$3.99</span>
+                            <select class="prod-size">
+                                <option>3cm</option>
+                                <option>5cm</option>
+                                <option>9cm</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-gold prod-buy" data-key="add_cart"
+                            onclick="addToCart('Custom Die-Cut Sticker', 3.99)"><i class="fas fa-cart-plus"></i> Add to
+                            Cart</button>
+                    </div>
+                </div>
+
+                <!-- Sticker 2 -->
+                <div class="product-card">
+                    <div class="prod-img">
+                        <span class="prod-badge">Stickers</span>
+                        <img src="658893211_17909840601365437_3701536070296960395_n.jpg" alt="Holographic Sticker">
+                    </div>
+                    <div class="prod-body">
+                        <h3 data-key="p5_title">Holographic Sticker Set</h3>
+                        <p data-key="p5_desc">Eye-catching holographic finish. Perfect for collectors and enthusiasts.
+                        </p>
+                        <div class="prod-meta">
+                            <span class="prod-price">$6.99</span>
+                            <select class="prod-size">
+                                <option>3cm</option>
+                                <option>5cm</option>
+                                <option>9cm</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-gold prod-buy" data-key="add_cart"
+                            onclick="addToCart('Holographic Sticker Set', 6.99)"><i class="fas fa-cart-plus"></i> Add to
+                            Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ───── CLOTHES SECTION ───── -->
+    <section class="section-pad">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; width: 90%;">
+            <h2 class="text-gradient" style="font-size: 2.5rem; margin-bottom: 30px;"><i class="fas fa-tshirt"></i>
+                Premium Clothes</h2>
+            <div class="products-grid">
+                <!-- Hoodie -->
+                <div class="product-card">
+                    <div class="prod-img">
+                        <span class="prod-badge">Apparel</span>
+                        <img src="634823039_17902363227365437_878815840206300585_n.jpg" alt="Premium Hoodie">
+                    </div>
+                    <div class="prod-body">
+                        <h3 data-key="p2_title">Premium Black Hoodie</h3>
+                        <p data-key="p2_desc">Soft cotton blend with custom high-quality embroidery or print.</p>
+                        <div class="prod-meta">
+                            <span class="prod-price">$35.00</span>
+                            <select class="prod-size">
+                                <option>Medium (M)</option>
+                                <option>Large (L)</option>
+                                <option>X-Large (XL)</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-gold prod-buy" data-key="add_cart"
+                            onclick="addToCart('Premium Black Hoodie', 35.00)"><i class="fas fa-cart-plus"></i> Add to
+                            Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ───── CUPS SECTION ───── -->
+    <section class="section-pad">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; width: 90%;">
+            <h2 class="text-gradient" style="font-size: 2.5rem; margin-bottom: 30px;"><i class="fas fa-mug-hot"></i>
+                Mugs & Cups</h2>
+            <div class="products-grid">
+                <!-- Mug -->
+                <div class="product-card">
+                    <div class="prod-img">
+                        <span class="prod-badge">Mugs</span>
+                        <img src="634874118_17902563750365437_7086246413389801723_n.jpg" alt="Custom Mug">
+                    </div>
+                    <div class="prod-body">
+                        <h3 data-key="p3_title">Ceramic Graphic Mug</h3>
+                        <p data-key="p3_desc">Start your day with our high-quality sublimated ceramic mugs.</p>
+                        <div class="prod-meta">
+                            <span class="prod-price">$12.50</span>
+                            <select class="prod-size">
+                                <option>11 oz</option>
+                                <option>15 oz</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-gold prod-buy" data-key="add_cart"
+                            onclick="addToCart('Ceramic Graphic Mug', 12.50)"><i class="fas fa-cart-plus"></i> Add to
+                            Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ───── WEDDING CARDS SECTION ───── -->
+    <section class="section-pad">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; width: 90%;">
+            <h2 class="text-gradient" style="font-size: 2.5rem; margin-bottom: 30px;"><i
+                    class="fas fa-envelope-open-text"></i> Wedding Cards</h2>
+            <div class="products-grid">
+                <!-- Wedding Cards -->
+                <div class="product-card">
+                    <div class="prod-img">
+                        <span class="prod-badge">Wedding</span>
+                        <img src="logo.png" alt="Wedding Cards">
+                    </div>
+                    <div class="prod-body">
+                        <h3 data-key="p6_title">Elegant Wedding Cards</h3>
+                        <p data-key="p6_desc">Premium, custom printed invitations for your special day.</p>
+                        <div class="prod-meta">
+                            <span class="prod-price">$1.50</span>
+                            <select class="prod-size">
+                                <option>Standard (13x18cm)</option>
+                                <option>Square (15x15cm)</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-gold prod-buy" data-key="add_cart"
+                            onclick="addToCart('Elegant Wedding Cards', 1.50)"><i class="fas fa-cart-plus"></i> Add to
+                            Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ───── RANDOM SECTION ───── -->
+    <section class="section-pad" style="padding-bottom: 80px;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; width: 90%;">
+            <h2 class="text-gradient" style="font-size: 2.5rem; margin-bottom: 30px;"><i class="fas fa-gift"></i> Random
+                / Bundles</h2>
+            <div class="products-grid">
+                <!-- Gift Box -->
+                <div class="product-card">
+                    <div class="prod-img">
+                        <span class="prod-badge">Bundles</span>
+                        <img src="635772067_17902563759365437_7321501078453608936_n.jpg" alt="Gift Box">
+                    </div>
+                    <div class="prod-body">
+                        <h3 data-key="p4_title">Luxury Gift Box</h3>
+                        <p data-key="p4_desc">The ultimate package containing hoodie, cup, and sticker sets.</p>
+                        <div class="prod-meta">
+                            <span class="prod-price">$55.00</span>
+                            <select class="prod-size" style="visibility:hidden;">
+                                <option>N/A</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-gold prod-buy" data-key="add_cart"
+                            onclick="addToCart('Luxury Gift Box', 55.00)"><i class="fas fa-cart-plus"></i> Add to
+                            Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="lapzerin-footer"></div>
+    <script src="components.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

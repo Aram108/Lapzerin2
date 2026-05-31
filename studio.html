@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creator Studio | Lap Zerin</title>
+    <meta name="description"
+        content="Design your own custom hoodies, stickers, and mugs in the Lap Zerin Creator Studio.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .studio-wrapper {
+            margin-top: 80px;
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            height: calc(100vh - 80px);
+            background: #050505;
+        }
+
+        /* Base Panels */
+        .studio-panel {
+            background: rgba(12, 10, 8, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .studio-panel.right-panel {
+            border-right: none;
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Typography & Headers */
+        .panel-heading {
+            color: var(--white);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-heading i {
+            color: var(--gold);
+        }
+
+        /* Product Selector */
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .prod-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: var(--white-80);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            font-size: 0.95rem;
+            text-align: left;
+        }
+
+        .prod-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .prod-btn.active {
+            border-color: var(--gold);
+            background: rgba(245, 184, 0, 0.1);
+            color: var(--gold);
+        }
+
+        /* Layers List */
+        .layer-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+        }
+
+        .layer-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .layer-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .layer-item.active {
+            border-color: var(--gold);
+            background: rgba(245, 184, 0, 0.08);
+        }
+
+        .layer-img-thumb {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            object-fit: contain;
+            background: #fff;
+        }
+
+        .layer-name {
+            color: var(--white-80);
+            font-size: 0.85rem;
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .layer-action {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: 0.2s;
+        }
+
+        .layer-action:hover {
+            opacity: 1;
+        }
+
+        /* 3D Canvas / Center */
+        .studio-canvas {
+            position: relative;
+            background: radial-gradient(circle at center, rgba(30, 24, 10, 0.9) 0%, rgba(5, 5, 5, 1) 100%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .canvas-bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .mockup-wrap {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.4s, visibility 0.4s;
+        }
+
+        .mockup-wrap.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+        }
+
+        .mockup-model {
+            width: 80%;
+            height: 80%;
+            max-height: 800px;
+            display: block;
+            filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.8));
+        }
+
+        .scene-overlays {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            /* Let touches pass through to 3d model unless on a decal */
+            transform-style: preserve-3d;
+            perspective: 800px;
+        }
+
+        /* Draggable Decal */
+        .decal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: move;
+            pointer-events: all;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            filter: drop-shadow(0px 8px 10px rgba(0, 0, 0, 0.4));
+            border: 2px dashed transparent;
+        }
+
+        .decal img {
+            width: 100%;
+            display: block;
+            pointer-events: none;
+        }
+
+        .decal.active {
+            border-color: var(--gold);
+        }
+
+        .decal:hover {
+            border-color: rgba(245, 184, 0, 0.5);
+        }
+
+        /* 3D Pinned Hotspot */
+        .decal-hotspot {
+            background: transparent;
+            border: 2px dashed transparent;
+            padding: 0;
+            margin: 0;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .decal-hotspot.active {
+            border-color: var(--gold);
+        }
+
+        /* --- A4 PAPER / STICKER CSS --- */
+        .a4-paper {
+            width: 55%;
+            max-width: 260px;
+            aspect-ratio: 1 / 1.414;
+            /* A4 aspect ratio */
+            background: #ffffff;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            border-radius: 4px;
+        }
+
+        .decal-hotspot:hover {
+            border-color: rgba(245, 184, 0, 0.5);
+        }
+
+        /* Drag Drop Zone */
+        .drop-zone {
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .drop-zone.dragover {
+            border-color: var(--gold);
+            background: rgba(245, 184, 0, 0.1);
+            transform: scale(1.02);
+        }
+
+        .drop-zone i {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+
+        .drop-zone h4 {
+            color: #fff;
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+
+        .drop-zone p {
+            color: var(--white-60);
+            font-size: 0.8rem;
+        }
+
+        /* Properties Pane */
+        .prop-group {
+            margin-bottom: 20px;
+        }
+
+        .prop-label {
+            font-size: 0.8rem;
+            color: var(--white-60);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .slider-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            accent-color: var(--gold);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--white-60);
+            padding: 20px;
+            font-size: 0.9rem;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        @media (max-width: 1024px) {
+            .studio-wrapper {
+                display: flex;
+                flex-direction: column;
+                height: calc(100vh - 80px);
+                overflow: hidden;
+            }
+
+            .studio-canvas {
+                order: 0;
+                height: 45vh;
+                /* takes up roughly half the screen */
+                min-height: 250px;
+                max-height: 400px;
+                width: 100%;
+                flex-shrink: 0;
+                position: relative;
+                z-index: 10;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            }
+
+            .studio-panel,
+            .studio-panel.right-panel {
+                order: 1;
+                position: relative;
+                flex-grow: 1;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                min-height: 0;
+                max-height: unset;
+                overflow-y: auto;
+                border: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.07);
+                display: none;
+                padding: 16px;
+                padding-bottom: 80px;
+                /* space for the fixed tab bar */
+                gap: 16px;
+                z-index: 5;
+            }
+
+            .studio-panel.mobile-active,
+            .studio-panel.right-panel.mobile-active {
+                display: flex !important;
+            }
+
+            .mobile-tab-bar {
+                display: flex !important;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 60px;
+                background: rgba(8, 6, 4, 0.97);
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                z-index: 200;
+                backdrop-filter: blur(12px);
+            }
+
+            .mobile-tab {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                background: none;
+                border: none;
+                color: rgba(255, 255, 255, 0.4);
+                font-size: 0.6rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                cursor: pointer;
+                transition: color 0.2s;
+                font-family: inherit;
+            }
+
+            .mobile-tab i {
+                font-size: 1.1rem;
+                margin-bottom: 1px;
+            }
+
+            .mobile-tab.active {
+                color: var(--gold);
+            }
+
+            .product-grid {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 4px;
+                gap: 10px;
+                flex-direction: row;
+            }
+
+            .product-grid::-webkit-scrollbar {
+                height: 3px;
+            }
+
+            .product-grid::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.15);
+                border-radius: 10px;
+            }
+
+            .prod-btn {
+                flex-shrink: 0;
+                white-space: nowrap;
+                padding: 10px 14px;
+                font-size: 0.85rem;
+            }
+
+            .prop-label {
+                font-size: 0.75rem;
+            }
+
+            .panel-heading {
+                font-size: 0.8rem;
+            }
+
+            .mockup-model {
+                width: 90%;
+                height: 90%;
+            }
+
+            body {
+                padding-bottom: 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="lapzerin-header"></div>
+
+    <div class="studio-wrapper">
+
+        <!-- LEFT PANEL: Products & Layers -->
+        <div class="studio-panel">
+            <div>
+                <div class="panel-heading">1. Product <i class="fas fa-box"></i></div>
+                <div class="product-grid">
+                    <button class="prod-btn active" onclick="switchMockup('hoodie', this)">
+                        <i class="fas fa-tshirt"></i> 3D Hoodie (Premium)
+                    </button>
+                    <button class="prod-btn" onclick="switchMockup('sticker', this)">
+                        <i class="fas fa-sticky-note"></i> A4 Sticker Sheet
+                    </button>
+                    <button class="prod-btn" onclick="switchMockup('mug', this)">
+                        <i class="fas fa-mug-hot"></i> Ceramic Mug
+                    </button>
+                </div>
+            </div>
+
+            <hr style="border-color: rgba(255,255,255,0.05); margin: 5px 0;">
+
+            <div style="display: flex; flex-direction: column; flex-grow: 1;">
+                <div class="panel-heading">Layers <i class="fas fa-layer-group"></i></div>
+                <div class="layer-list" id="layer-list">
+                    <div class="empty-state" id="empty-layers">No designs added yet. Upload an image to start!</div>
+                    <!-- populated by js -->
+                </div>
+            </div>
+        </div>
+
+        <!-- CENTER: Canvas -->
+        <div class="studio-canvas" id="canvas-area">
+            <div class="canvas-bg-grid"></div>
+
+            <div class="mockup-wrap active" id="mockup-hoodie">
+                <model-viewer src="low-poly_hoodie.glb" camera-controls shadow-intensity="1"
+                    class="mockup-model"></model-viewer>
+            </div>
+            <div class="mockup-wrap" id="mockup-sticker">
+                <div class="a4-paper"></div>
+            </div>
+            <div class="mockup-wrap" id="mockup-mug">
+                <model-viewer src="water_cup.glb" camera-controls shadow-intensity="1"
+                    class="mockup-model"></model-viewer>
+            </div>
+
+            <div class="scene-overlays" id="overlays-container">
+                <!-- draggable decals injected here -->
+            </div>
+
+            <div
+                style="position:absolute; bottom:20px; text-align:center; color:rgba(255,255,255,0.3); font-size:0.8rem; pointer-events:none;">
+                <i class="fas fa-mouse-pointer"></i> Drag images to position. Use canvas to rotate 3D models.
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: Upload & Properties -->
+        <div class="studio-panel right-panel" id="panel-right">
+            <div>
+                <div class="panel-heading">2. Add Design <i class="fas fa-image"></i></div>
+                <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-upload').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h4>Click or Drop Image</h4>
+                    <p>PNG / JPG (Transparent best)</p>
+                </div>
+                <input type="file" id="file-upload" accept="image/*" style="display:none;"
+                    onchange="handleFileUpload(event)">
+            </div>
+
+            <div id="properties-panel"
+                style="display: none; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 12px; border: 1px solid rgba(245,184,0,0.2);">
+                <div class="panel-heading" style="color:var(--gold); margin-bottom: 20px;">Layer Properties <i
+                        class="fas fa-sliders-h"></i></div>
+
+                <div class="prop-group">
+                    <span class="prop-label">Scale (Overall Size)</span>
+                    <div class="slider-wrap">
+                        <i class="fas fa-compress" style="color:var(--white-60);font-size:12px;"></i>
+                        <input type="range" id="prop-scale" min="30" max="400" value="150"
+                            oninput="updateActiveScale(this.value)">
+                        <i class="fas fa-expand" style="color:var(--white-60);font-size:14px;"></i>
+                    </div>
+                </div>
+
+                <div class="prop-group">
+                    <span class="prop-label">Stretch Width</span>
+                    <div class="slider-wrap">
+                        <i class="fas fa-compress-arrows-alt" style="color:var(--white-60);font-size:12px;"></i>
+                        <input type="range" id="prop-stretch-x" min="0.2" max="3" step="0.05" value="1"
+                            oninput="updateActiveStretch('x', this.value)">
+                        <i class="fas fa-arrows-alt-h" style="color:var(--white-60);font-size:14px;"></i>
+                    </div>
+                </div>
+
+                <div class="prop-group">
+                    <span class="prop-label">Stretch Height</span>
+                    <div class="slider-wrap">
+                        <i class="fas fa-compress-arrows-alt"
+                            style="color:var(--white-60);font-size:12px; transform: rotate(90deg);"></i>
+                        <input type="range" id="prop-stretch-y" min="0.2" max="3" step="0.05" value="1"
+                            oninput="updateActiveStretch('y', this.value)">
+                        <i class="fas fa-arrows-alt-v" style="color:var(--white-60);font-size:14px;"></i>
+                    </div>
+                </div>
+
+                <div class="prop-group">
+                    <span class="prop-label">Opacity</span>
+                    <div class="slider-wrap">
+                        <i class="fas fa-eye-slash" style="color:var(--white-60);font-size:12px;"></i>
+                        <input type="range" id="prop-opacity" min="0.1" max="1" step="0.05" value="1"
+                            oninput="updateActiveOpacity(this.value)">
+                        <i class="fas fa-eye" style="color:var(--white-60);font-size:14px;"></i>
+                    </div>
+                </div>
+
+                <!-- Sticker-only controls -->
+                <div id="sticker-controls" class="prop-group"
+                    style="display:none; border-top:1px solid rgba(255,255,255,0.08); padding-top:14px; margin-top:4px;">
+                    <span class="prop-label" style="color:var(--gold);"><i class="fas fa-cut"></i> Die-Cut Border</span>
+                    <div class="slider-wrap" style="margin-top:8px;">
+                        <i class="fas fa-border-style" style="color:var(--white-60);font-size:12px;"></i>
+                        <input type="range" id="prop-border-size" min="0" max="20" value="4"
+                            oninput="updateStickerBorder()">
+                        <i class="fas fa-border-all" style="color:var(--white-60);font-size:14px;"></i>
+                    </div>
+                    <div class="slider-wrap" style="margin-top:8px; gap:12px;">
+                        <span class="prop-label" style="margin:0;">Color</span>
+                        <input type="color" id="prop-border-color" value="#ffffff"
+                            style="width:36px; height:30px; border:none; background:none; cursor:pointer; padding:0;"
+                            oninput="updateStickerBorder()">
+                        <span id="border-color-label" style="font-size:0.8rem; color:var(--white-60);">#ffffff</span>
+                    </div>
+                </div>
+
+                <div class="prop-group" style="display:flex; gap:10px;">
+                    <button class="btn btn-outline" style="flex:1; justify-content:center; padding:8px;"
+                        onclick="toggleActiveFlip()">
+                        <i class="fas fa-exchange-alt"></i> Mirror
+                    </button>
+                    <button class="btn btn-outline" id="btn-unpin"
+                        style="flex:1; justify-content:center; padding:8px; display:none; border-color:#ff9900; color:#ff9900;"
+                        onclick="unpinFrom3D()">
+                        <i class="fas fa-unlink"></i> Unpin
+                    </button>
+                </div>
+
+                <div class="prop-group" style="margin-top:20px;">
+                    <button class="btn btn-outline" id="btn-pin"
+                        style="width:100%; justify-content:center; border-color:var(--gold); color:var(--gold); padding:8px; margin-bottom: 10px;"
+                        onclick="pinTo3D()">
+                        <i class="fas fa-thumbtack"></i> Pin to 3D Surface
+                    </button>
+                    <button class="btn btn-outline"
+                        style="width:100%; justify-content:center; border-color:#ff4d4d; color:#ff4d4d; padding:8px;"
+                        onclick="if(activeLayerId) removeLayer(activeLayerId)">
+                        <i class="fas fa-trash"></i> Delete Selected Layer
+                    </button>
+                </div>
+            </div>
+
+            <hr style="border-color: rgba(255,255,255,0.05); margin: 0;">
+
+            <div style="flex-grow: 1; display:flex; flex-direction:column; justify-content: flex-end;">
+                <div class="panel-heading">3. Detail & Order <i class="fas fa-shopping-cart"></i></div>
+
+                <!-- Qty selector with +/- buttons -->
+                <div
+                    style="display:flex; align-items:center; gap:10px; margin-bottom:14px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:6px 12px;">
+                    <span style="color:var(--white-60); font-size:0.8rem;"><i class="fas fa-layer-group"></i> Qty</span>
+                    <button
+                        onclick="let q=document.getElementById('order-qty'); q.value=Math.max(1, parseInt(q.value||1)-1);"
+                        style="background:rgba(255,255,255,0.08); border:none; color:#fff; border-radius:6px; width:28px; height:28px; cursor:pointer; font-size:1rem;">−</button>
+                    <input type="number" id="order-qty" value="1" min="1"
+                        style="flex:1; background:none; border:none; color:#fff; font-size:1.05rem; font-weight:700; text-align:center; width:40px; outline:none;">
+                    <button onclick="let q=document.getElementById('order-qty'); q.value=parseInt(q.value||1)+1;"
+                        style="background:rgba(255,255,255,0.08); border:none; color:#fff; border-radius:6px; width:28px; height:28px; cursor:pointer; font-size:1rem;">+</button>
+                </div>
+
+                <!-- Notes -->
+                <div style="position:relative; margin-bottom:15px;">
+                    <textarea id="order-notes" placeholder="Notes (e.g. Remove bg, print on back)" rows="3"
+                        style="width:100%; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:#fff; font-family:inherit; font-size:0.88rem; padding:10px 12px 10px 36px; resize:none; outline:none; box-sizing:border-box; transition:border-color 0.2s;"
+                        onfocus="this.style.borderColor='var(--gold)'"
+                        onblur="this.style.borderColor='rgba(255,255,255,0.1)'"></textarea>
+                    <i class="fas fa-pen"
+                        style="position:absolute; top:12px; left:12px; color:var(--white-60); font-size:0.8rem; pointer-events:none;"></i>
+                </div>
+
+                <button class="btn btn-gold"
+                    style="width: 100%; justify-content: center; font-size: 1.05rem; padding: 14px;"
+                    onclick="submitToCart()">
+                    <i class="fas fa-shopping-cart"></i> Add to Cart &nbsp;<i class="fas fa-arrow-right"
+                        style="font-size:0.85rem;"></i>
+                </button>
+            </div>
+        </div>
+
+    </div> <!-- /wrapper -->
+
+    <!-- Mobile Tab Bar (hidden on desktop via CSS) -->
+    <div class="mobile-tab-bar" style="display:none;" id="mobile-tab-bar">
+        <button class="mobile-tab active" id="tab-layers" onclick="switchMobileTab('layers')">
+            <i class="fas fa-layer-group"></i> Layers
+        </button>
+        <button class="mobile-tab" id="tab-canvas" onclick="switchMobileTab('canvas')" style="color:var(--gold);">
+            <i class="fas fa-cube"></i> Canvas
+        </button>
+        <button class="mobile-tab" id="tab-props" onclick="switchMobileTab('props')">
+            <i class="fas fa-sliders-h"></i> Properties
+        </button>
+        <button class="mobile-tab" id="tab-order" onclick="switchMobileTab('order')">
+            <i class="fas fa-shopping-cart"></i> Order
+        </button>
+    </div>
+
+    <script src="components.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', injectComponents);
+
+        // State Manager
+        let layers = [];
+        let activeLayerId = null;
+        let layerCounter = 0;
+        let currentProduct = 'hoodie'; // track active product
+
+        // ── Mobile Tab System ──
+        function switchMobileTab(tab) {
+            const panelLeft = document.getElementById('panel-left');
+            const panelRight = document.getElementById('panel-right');
+            document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + tab)?.classList.add('active');
+
+            // Reset panels
+            panelLeft.classList.remove('mobile-active');
+            panelRight.classList.remove('mobile-active');
+
+            if (tab === 'layers') panelLeft.classList.add('mobile-active');
+            if (tab === 'canvas') { /* canvas always visible - just bring focus */ }
+            if (tab === 'props' || tab === 'order') panelRight.classList.add('mobile-active');
+
+            // Scroll right panel to the correct section
+            if (tab === 'order') {
+                setTimeout(() => {
+                    const orderSection = panelRight.querySelector('#order-qty');
+                    if (orderSection) orderSection.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+
+        // Show tab bar on mobile
+        function initMobileUI() {
+            const isMobile = window.innerWidth <= 1024;
+            const tabBar = document.getElementById('mobile-tab-bar');
+            if (tabBar) tabBar.style.display = isMobile ? 'flex' : 'none';
+            if (isMobile) {
+                // Start on Layers tab
+                switchMobileTab('layers');
+            } else {
+                // On desktop: reset panels to always visible
+                document.getElementById('panel-left')?.classList.add('mobile-active');
+                document.getElementById('panel-right')?.classList.add('mobile-active');
+            }
+        }
+
+        window.addEventListener('resize', initMobileUI);
+        document.addEventListener('DOMContentLoaded', initMobileUI);
+
+        // UI Elements
+        const dropZone = document.getElementById('drop-zone');
+        const overlaysContainer = document.getElementById('overlays-container');
+        const layerListEl = document.getElementById('layer-list');
+        const emptyStateEl = document.getElementById('empty-layers');
+        const propertiesPanel = document.getElementById('properties-panel');
+        const scaleSlider = document.getElementById('prop-scale');
+
+        // Product Switch
+        function switchMockup(type, btn) {
+            document.querySelectorAll('.prod-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.mockup-wrap').forEach(w => w.classList.remove('active'));
+            const target = document.getElementById('mockup-' + type);
+            target.classList.add('active');
+            currentProduct = type;
+
+            // Overlays are ALWAYS shown now, because A4 sticker sheet uses them!
+            overlaysContainer.style.display = 'block';
+
+            if (type === 'sticker') {
+                overlaysContainer.classList.add('mode-sticker');
+            } else {
+                overlaysContainer.classList.remove('mode-sticker');
+            }
+
+            // Force model-viewer to redraw after being hidden
+            if (type === 'hoodie' || type === 'mug') {
+                const mv = document.querySelector('.mockup-wrap.active model-viewer');
+                if (mv) setTimeout(() => mv.dispatchEvent(new Event('resize')), 100);
+                // Re-apply face visibility for pinned layers
+                const orbit = get3DOrbit();
+                updateFaceVisibility(orbit);
+            }
+
+            // Update pin button visibility properly
+            if (activeLayerId) selectLayer(activeLayerId);
+
+            if (typeof gsap !== 'undefined') {
+                gsap.fromTo(target, { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5 });
+            }
+        }
+
+        function get3DOrbit() {
+            const mv = document.querySelector('.mockup-wrap.active model-viewer');
+            if (!mv) return 0;
+            try { return mv.getCameraOrbit().theta; } catch (e) { return 0; }
+        }
+
+        // Listen to camera rotation and update face visibility
+        document.addEventListener('DOMContentLoaded', () => {
+            const mvs = document.querySelectorAll('model-viewer');
+            mvs.forEach(mv => {
+                mv.addEventListener('camera-change', () => {
+                    if (!mv.closest('.mockup-wrap.active')) return;
+                    const theta = get3DOrbit();
+                    updateFaceVisibility(theta);
+                });
+            });
+        });
+
+        function updateFaceVisibility(currentTheta) {
+            layers.forEach(layer => {
+                if (!layer.isPinned) return;
+                const el = document.getElementById('hotspot_' + layer.id);
+                if (!el) return;
+
+                // Calculate difference in theta (radians)
+                const diff = (layer.pinTheta || 0) - currentTheta;
+                // Normalize angle between -PI and PI
+                const norm = Math.atan2(Math.sin(diff), Math.cos(diff));
+
+                // Strict Hide: If model rotates more than 60 degrees (PI/3) from the pin angle, hide the image!
+                // This guarantees front images don't bleed onto the left, right, or back.
+                if (Math.abs(norm) < Math.PI / 3) {
+                    el.style.display = 'block';
+                } else {
+                    el.style.display = 'none';
+                }
+            });
+        }
+
+        // Drag & Drop File Upload
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); });
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault(); dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
+        });
+        function handleFileUpload(e) { if (e.target.files[0]) processFile(e.target.files[0]); e.target.value = ''; }
+
+        function processFile(file) {
+            if (!file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                addLayer(e.target.result, file.name || 'Custom Image');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Layer System
+        function addLayer(base64Src, name) {
+            layerCounter++;
+            const id = 'layer_' + layerCounter;
+
+            const newLayer = { id, name, src: base64Src, scale: 150, stretchX: 1, stretchY: 1, opacity: 1, flipped: false, isPinned: false, borderSize: 4, borderColor: '#ffffff' };
+            layers.push(newLayer);
+
+            // Create DOM Decal
+            const decal = document.createElement('div');
+            decal.className = 'decal';
+            decal.id = 'decal_' + id;
+            decal.style.width = '150px';
+            decal.innerHTML = `<img src="${base64Src}">`;
+
+            // Drag Logic
+            makeDraggable(decal, id);
+
+            // Click to select
+            decal.addEventListener('pointerdown', () => selectLayer(id));
+
+            overlaysContainer.appendChild(decal);
+
+            if (typeof gsap !== 'undefined') {
+                gsap.from(decal, { scale: 0, rotation: -15, duration: 0.5, ease: "back.out(1.5)" });
+            }
+
+            renderLayerList();
+            selectLayer(id);
+        }
+
+        function renderLayerList() {
+            emptyStateEl.style.display = layers.length === 0 ? 'block' : 'none';
+
+            // Clear existing except empty state
+            Array.from(layerListEl.children).forEach(c => { if (c.id !== 'empty-layers') c.remove(); });
+
+            // Build reverse list (top layer first)
+            [...layers].reverse().forEach(layer => {
+                const item = document.createElement('div');
+                item.className = 'layer-item' + (layer.id === activeLayerId ? ' active' : '');
+                item.onclick = () => selectLayer(layer.id);
+
+                item.innerHTML = `
+                    <img src="${layer.src}" class="layer-img-thumb">
+                    <span class="layer-name">${layer.name}</span>
+                    <button class="layer-action" onclick="event.stopPropagation(); removeLayer('${layer.id}')"><i class="fas fa-times"></i></button>
+                `;
+                layerListEl.appendChild(item);
+            });
+        }
+
+        function selectLayer(id) {
+            activeLayerId = id;
+
+            // UI States
+            document.querySelectorAll('.decal').forEach(d => d.classList.remove('active'));
+            document.querySelectorAll('.decal-hotspot').forEach(d => d.classList.remove('active'));
+
+            const activeDecal = document.getElementById('decal_' + id);
+            if (activeDecal) activeDecal.classList.add('active');
+
+            const activeHotspot = document.getElementById('hotspot_' + id);
+            if (activeHotspot) activeHotspot.classList.add('active');
+
+            renderLayerList();
+
+            // Setup Properties Panel
+            if (activeLayerId) {
+                propertiesPanel.style.display = 'block';
+                const layer = layers.find(l => l.id === id);
+                scaleSlider.value = layer.scale;
+                document.getElementById('prop-opacity').value = layer.opacity;
+                document.getElementById('prop-stretch-x').value = layer.stretchX;
+                document.getElementById('prop-stretch-y').value = layer.stretchY;
+
+                // Show sticker-border controls only when on sticker tab
+                const stickerCtrl = document.getElementById('sticker-controls');
+                if (currentProduct === 'sticker') {
+                    stickerCtrl.style.display = 'block';
+                    document.getElementById('prop-border-size').value = layer.borderSize ?? 4;
+                    document.getElementById('prop-border-color').value = layer.borderColor ?? '#ffffff';
+                    document.getElementById('border-color-label').innerText = layer.borderColor ?? '#ffffff';
+                } else {
+                    stickerCtrl.style.display = 'none';
+                }
+
+                // Show/hide Pin button based on whether it is already pinned
+                const is3DActive = (currentProduct === 'hoodie' || currentProduct === 'mug');
+
+                if (layer.isPinned) {
+                    document.getElementById('btn-pin').style.display = 'none';
+                    document.getElementById('btn-unpin').style.display = 'flex';
+                } else {
+                    document.getElementById('btn-unpin').style.display = 'none';
+                    document.getElementById('btn-pin').style.display = is3DActive ? 'flex' : 'none';
+                }
+
+            } else {
+                propertiesPanel.style.display = 'none';
+            }
+        }
+
+        // Apply visual transforms mathematically based on properties
+        function applyLayerTransform(id) {
+            const layer = layers.find(l => l.id === id);
+            if (!layer) return;
+
+            const scaleX = layer.flipped ? -layer.stretchX : layer.stretchX;
+            const transformStr = `scale(${scaleX}, ${layer.stretchY})`;
+
+            // Build sticker die-cut border filter if in sticker mode
+            let filterStr = '';
+            if (currentProduct === 'sticker' && (layer.borderSize ?? 0) > 0) {
+                const s = layer.borderSize;
+                const c = layer.borderColor || '#ffffff';
+                filterStr = [
+                    `drop-shadow(${s}px 0 0 ${c})`,
+                    `drop-shadow(-${s}px 0 0 ${c})`,
+                    `drop-shadow(0 ${s}px 0 ${c})`,
+                    `drop-shadow(0 -${s}px 0 ${c})`,
+                    `drop-shadow(${s - 1}px ${s - 1}px 0 ${c})`,
+                    `drop-shadow(-${s - 1}px ${s - 1}px 0 ${c})`,
+                    `drop-shadow(${s - 1}px -${s - 1}px 0 ${c})`,
+                    `drop-shadow(-${s - 1}px -${s - 1}px 0 ${c})`,
+                    `drop-shadow(0 10px 20px rgba(0,0,0,0.25))`
+                ].join(' ');
+            }
+
+            const decal = document.getElementById('decal_' + id);
+            if (decal) {
+                const img = decal.querySelector('img');
+                img.style.transform = transformStr;
+                img.style.filter = filterStr;
+            }
+
+            const hotspot = document.getElementById('hotspot_' + id);
+            if (hotspot) {
+                const img = hotspot.querySelector('img');
+                img.style.transform = transformStr;
+                img.style.filter = filterStr;
+            }
+        }
+
+        function updateStickerBorder() {
+            if (!activeLayerId) return;
+            const layer = layers.find(l => l.id === activeLayerId);
+            layer.borderSize = parseInt(document.getElementById('prop-border-size').value);
+            layer.borderColor = document.getElementById('prop-border-color').value;
+            document.getElementById('border-color-label').innerText = layer.borderColor;
+            applyLayerTransform(activeLayerId);
+        }
+
+        function updateActiveStretch(axis, val) {
+            if (!activeLayerId) return;
+            const layer = layers.find(l => l.id === activeLayerId);
+            if (axis === 'x') layer.stretchX = parseFloat(val);
+            if (axis === 'y') layer.stretchY = parseFloat(val);
+            applyLayerTransform(activeLayerId);
+        }
+
+        function updateActiveScale(val) {
+            if (!activeLayerId) return;
+            const layer = layers.find(l => l.id === activeLayerId);
+            layer.scale = val;
+            const decal = document.getElementById('decal_' + activeLayerId);
+            if (decal) decal.style.width = val + 'px';
+
+            const hotspot = document.getElementById('hotspot_' + activeLayerId);
+            if (hotspot) hotspot.style.width = val + 'px';
+        }
+
+        function updateActiveOpacity(val) {
+            if (!activeLayerId) return;
+            const layer = layers.find(l => l.id === activeLayerId);
+            layer.opacity = val;
+            const decal = document.getElementById('decal_' + activeLayerId);
+            if (decal) decal.style.opacity = val;
+
+            const hotspot = document.getElementById('hotspot_' + activeLayerId);
+            if (hotspot) hotspot.style.opacity = val;
+        }
+
+        function toggleActiveFlip() {
+            if (!activeLayerId) return;
+            const layer = layers.find(l => l.id === activeLayerId);
+            layer.flipped = !layer.flipped;
+            applyLayerTransform(activeLayerId);
+        }
+
+        function removeLayer(id) {
+            layers = layers.filter(l => l.id !== id);
+            const decal = document.getElementById('decal_' + id);
+            if (decal) decal.remove();
+
+            const hotspot = document.getElementById('hotspot_' + id);
+            if (hotspot) hotspot.remove();
+
+            if (activeLayerId === id) {
+                selectLayer(layers.length > 0 ? layers[layers.length - 1].id : null);
+            } else {
+                renderLayerList();
+            }
+        }
+
+        function pinTo3D() {
+            if (!activeLayerId) return;
+            const layer = layers.find(l => l.id === activeLayerId);
+            const decal = document.getElementById('decal_' + activeLayerId);
+            if (!decal) return;
+
+            const canvas = document.getElementById('canvas-area');
+            const modelViewer = document.querySelector('.mockup-wrap.active model-viewer');
+            if (!modelViewer) {
+                alert("Pinning to 3D surface is only available for 3D products.");
+                return;
+            }
+
+            // Get precise viewport coordinates of the decal's center
+            const decalRect = decal.getBoundingClientRect();
+            let centerX = decalRect.left + decalRect.width / 2;
+            let centerY = decalRect.top + decalRect.height / 2;
+
+            // Model-viewer expects standard event clientX/clientY relative to viewport
+            let hit = modelViewer.positionAndNormalFromPoint(centerX, centerY);
+
+            // SMART FALLBACK: If the visual center misses the mesh (common for wide images on thin cups),
+            // auto-snap to the horizontal center of the mesh, locking to the user's chosen height!
+            if (!hit) {
+                const mvRect = modelViewer.getBoundingClientRect();
+                const spineX = mvRect.left + mvRect.width / 2;
+                hit = modelViewer.positionAndNormalFromPoint(spineX, centerY);
+
+                // If it STILL misses (e.g. they dropped it on the hollow rim), test the lower front wall!
+                if (!hit) {
+                    hit = modelViewer.positionAndNormalFromPoint(spineX, mvRect.top + (mvRect.height * 0.65));
+                }
+            }
+
+            if (hit) {
+                decal.remove();
+                layer.isPinned = true;
+                layer.hitData = { pos: hit.position.toString(), norm: hit.normal.toString() };
+
+                // Create true 3D anchored hotspot
+                const hotspot = document.createElement('div');
+                hotspot.className = 'decal-hotspot active';
+                hotspot.id = 'hotspot_' + activeLayerId;
+                hotspot.slot = 'hotspot-' + activeLayerId;
+                hotspot.dataset.position = layer.hitData.pos;
+                hotspot.dataset.normal = layer.hitData.norm;
+
+                // IMPORTANT: We use absolute + translate to perfectly center the HTML div over the 3D anchor
+                hotspot.style.cssText = `
+                    width: ${layer.scale}px;
+                    opacity: ${layer.opacity};
+                    position: absolute;
+                    transform: translate(-50%, -50%);
+                    pointer-events: all;
+                    cursor: pointer;
+                    z-index: 100;
+                `;
+
+                const scaleX = layer.flipped ? -layer.stretchX : layer.stretchX;
+                hotspot.innerHTML = `<img src="${layer.src}" style="width:100%; display:block; pointer-events:none; transform: scale(${scaleX}, ${layer.stretchY});">`;
+
+                hotspot.addEventListener('pointerdown', (e) => {
+                    e.stopPropagation();
+                    selectLayer(layer.id);
+                });
+
+                modelViewer.appendChild(hotspot);
+                selectLayer(activeLayerId);
+            } else {
+                alert("Could not detect the 3D surface. Make sure the image is covering the product.");
+            }
+        }
+
+        function unpinFrom3D() {
+            if (!activeLayerId) return;
+            const layer = layers.find(l => l.id === activeLayerId);
+            if (!layer.isPinned) return;
+
+            const hotspot = document.getElementById('hotspot_' + activeLayerId);
+            if (!hotspot) return;
+
+            // Get screen coordinates of the hotspot right before removing it
+            const rect = hotspot.getBoundingClientRect();
+            hotspot.remove();
+
+            layer.isPinned = false;
+            layer.hitData = null;
+
+            // Recreate 2D Decal exactly where the hotspot was visually
+            const decal = document.createElement('div');
+            decal.className = 'decal active';
+            decal.id = 'decal_' + layer.id;
+            decal.style.cssText = `
+                width: ${layer.scale}px;
+                opacity: ${layer.opacity};
+                top: ${rect.top + rect.height / 2}px;
+                left: ${rect.left + rect.width / 2}px;
+            `;
+
+            const scaleX = layer.flipped ? -layer.stretchX : layer.stretchX;
+            decal.innerHTML = `<img src="${layer.src}" style="width:100%; display:block; pointer-events:none; transform: scale(${scaleX}, ${layer.stretchY});">`;
+
+            makeDraggable(decal, layer.id);
+            decal.addEventListener('pointerdown', () => selectLayer(layer.id));
+            overlaysContainer.appendChild(decal);
+
+            selectLayer(activeLayerId);
+        }
+
+        async function submitToCart() {
+            if (layers.length === 0) {
+                alert("Please add at least one design layer first.");
+                return;
+            }
+
+            const btn = document.querySelector('.btn-gold');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating 3D Previews...';
+            btn.disabled = true;
+
+            const qty = parseInt(document.getElementById('order-qty').value) || 1;
+            const notes = document.getElementById('order-notes').value;
+            let cartItems = JSON.parse(localStorage.getItem('lapzerin_cart') || '[]');
+
+            let finalImages = [];
+
+            if (currentProduct === 'hoodie' || currentProduct === 'mug') {
+                const mv = document.querySelector('.mockup-wrap.active model-viewer');
+                const origOrbit = mv.getCameraOrbit();
+
+                // Helper to capture composite
+                const captureAngle = async (thetaDeg) => {
+                    mv.cameraOrbit = `${thetaDeg}deg 90deg auto`;
+                    // Wait for rotation and render
+                    await new Promise(r => setTimeout(r, 600));
+
+                    // 1. Get base 3D render
+                    const mvData = mv.toDataURL("image/png");
+                    const img = new Image();
+                    img.src = mvData;
+                    await new Promise(r => img.onload = r);
+
+                    // 2. Setup composite canvas
+                    const canvas = document.createElement('canvas');
+                    canvas.width = mv.offsetWidth;
+                    canvas.height = mv.offsetHeight;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    // 3. Draw active hotspots
+                    const hotspots = mv.querySelectorAll('.decal-hotspot');
+                    for (let hs of hotspots) {
+                        const style = window.getComputedStyle(hs);
+                        // model-viewer hides obscured hotspots using opacity: 0
+                        if (style.opacity === '0' || style.display === 'none' || hs.style.display === 'none') continue;
+
+                        const hImgNode = hs.querySelector('img');
+                        const imgRect = hImgNode.getBoundingClientRect();
+                        const mvRect = mv.getBoundingClientRect();
+
+                        const x = imgRect.left - mvRect.left;
+                        const y = imgRect.top - mvRect.top;
+
+                        const hId = hs.id.replace('hotspot_', '');
+                        const layerData = layers.find(l => l.id === hId);
+
+                        const hImg = new Image();
+                        hImg.src = layerData.src;
+                        await new Promise(r => hImg.onload = r);
+
+                        ctx.globalAlpha = parseFloat(hs.style.opacity || '1');
+
+                        if (layerData && layerData.flipped) {
+                            ctx.save();
+                            ctx.translate(x + imgRect.width, y);
+                            ctx.scale(-1, 1);
+                            ctx.drawImage(hImg, 0, 0, imgRect.width, imgRect.height);
+                            ctx.restore();
+                        } else {
+                            ctx.drawImage(hImg, x, y, imgRect.width, imgRect.height);
+                        }
+                        ctx.globalAlpha = 1.0;
+                    }
+
+                    // Crop square aspect ratio from center for prettier cart icons
+                    const finalSize = Math.min(canvas.width, canvas.height);
+                    const cropCanvas = document.createElement('canvas');
+                    cropCanvas.width = finalSize;
+                    cropCanvas.height = finalSize;
+                    const cCtx = cropCanvas.getContext('2d');
+
+                    const offsetX = (canvas.width - finalSize) / 2;
+                    const offsetY = (canvas.height - finalSize) / 2;
+
+                    cCtx.drawImage(canvas, offsetX, offsetY, finalSize, finalSize, 0, 0, finalSize, finalSize);
+
+                    return cropCanvas.toDataURL("image/png", 0.8);
+                };
+
+                // Capture Front (0 deg)
+                finalImages.push(await captureAngle(0));
+
+                // Capture Back (180 deg)
+                finalImages.push(await captureAngle(180));
+
+                // Restore
+                mv.cameraOrbit = `${origOrbit.theta}rad ${origOrbit.phi}rad ${origOrbit.radius}m`;
+
+            } else {
+                // Not hoodie, just pass layers
+                finalImages = layers.map(layer => layer.src);
+            }
+
+            const prodNames = { 'hoodie': 'Custom 3D Hoodie', 'sticker': 'Die-Cut Sticker', 'mug': 'Graphic Mug' };
+            const prodPrices = { 'hoodie': 45.00, 'sticker': 3.50, 'mug': 15.00 };
+
+            cartItems.push({
+                id: 'custom_' + Date.now(),
+                type: 'custom',
+                name: prodNames[currentProduct] || 'Custom Item',
+                price: prodPrices[currentProduct] || 25.00,
+                qty: qty,
+                notes: notes,
+                layersCount: layers.length,
+                images: finalImages
+            });
+
+            localStorage.setItem('lapzerin_cart', JSON.stringify(cartItems));
+
+            btn.innerHTML = '<i class="fas fa-check"></i> Added to Cart!';
+            btn.style.background = '#4CAF50';
+            btn.style.borderColor = '#4CAF50';
+            btn.style.color = '#fff';
+
+            if (window.updateCartBadge) window.updateCartBadge();
+            setTimeout(() => { window.location.href = 'cart.html'; }, 800);
+        }
+
+        // DOM Draggable util (Mouse & Touch supported)
+        function makeDraggable(elmnt, id) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+            elmnt.addEventListener('mousedown', dragStart);
+            elmnt.addEventListener('touchstart', dragStart, { passive: false });
+
+            function dragStart(e) {
+                // Ignore if clicking on UI controls
+                if (e.target.tagName.toLowerCase() === 'button') return;
+
+                pos3 = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+                pos4 = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+
+                if (e.type === 'touchstart') {
+                    document.addEventListener('touchend', dragEnd);
+                    document.addEventListener('touchmove', dragAction, { passive: false });
+                } else {
+                    e.preventDefault();
+                    document.onmouseup = dragEnd;
+                    document.onmousemove = dragAction;
+                }
+
+                // Lift effect
+                elmnt.style.zIndex = 100;
+            }
+
+            function dragAction(e) {
+                e.preventDefault();
+                const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+                const clientY = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
+
+                pos1 = pos3 - clientX;
+                pos2 = pos4 - clientY;
+                pos3 = clientX;
+                pos4 = clientY;
+
+                // Move relative from its 50% translated center
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function dragEnd() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+                document.removeEventListener('touchend', dragEnd);
+                document.removeEventListener('touchmove', dragAction);
+                elmnt.style.zIndex = 10;
+            }
+        }
+    </script>
+</body>
+
+</html>
